@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Search bar</title>
+</head>
+
+<body>
+
+  <template>
+    <div class="users">
+
+      <p class="names"></p>
+      <p class="email"></p>
+      <p class="phone"></p>
+
+    </div>
+  </template>
+
+
+  <div class="container">
+
+    <div class="divSearch">
+      <label for="nameSeach">Search by name</label><br>
+      <input name="nameSeach" id="nameSeach" type="text">
+    </div>
+
+    <div class="usersContainer">
+
+
+
+    </div>
+
+  </div>
+
+
+
+
+  <script>
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (json) {
+
+        let getData = json;
+
+        let containerUsers = document.querySelector('.usersContainer');
+        let inputField = document.getElementById('nameSeach');
+        let names = document.querySelectorAll('.names');
+
+        function addUsers () {
+
+          let searchValue = inputField.value.trim().toLowerCase();
+          containerUsers.innerHTML = '';
+
+          for (let i = 0; i < getData.length; i++) {
+        
+            let user = getData[i];
+
+            let userName = user.name.toLowerCase();
+            let userEmail = user.email.toLowerCase();
+
+            if (userName.includes(searchValue) || userEmail.includes(searchValue)) {
+              containerUsers.insertAdjacentHTML('beforeend',
+                `<div class="users">
+                  <p class="names">${user.name}</p> 
+                <p class="email">${user.email}</p> 
+                <p class="phone">${user.phone}</p> 
+                </div>`
+              );
+            }
+          }
+        }
+
+        addUsers();
+
+        inputField.addEventListener('keyup', function () {
+          addUsers ();
+        });
+
+
+      });
+
+  </script>
+
+</body>
+
+</html>
